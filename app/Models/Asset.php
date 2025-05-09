@@ -9,6 +9,7 @@ class Asset extends Model
 {
     use HasFactory;
 
+    protected $table = 'assets';
     // Menambahkan kolom yang boleh diisi
     protected $fillable = [
         'name',
