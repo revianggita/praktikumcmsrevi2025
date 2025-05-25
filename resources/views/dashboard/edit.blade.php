@@ -7,12 +7,8 @@
 </head>
 <body class="bg-light py-5">
     <div class="container">
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">
-            <title>Edit Data Asset - Dashboard Inventaris</title>
-
-            </div>
-            <div class="card-body">
+        <h1 class="mb-4">Edit Data Asset</h1>
+        
                 <!-- Pesan sukses -->
                 @if(session('success'))
                     <div class="alert alert-success">
@@ -26,7 +22,7 @@
 
                     <div class="mb-3">
                         <label for="name" class="form-label">Nama</label>
-                        <input type="text" name="name" class="form-control" id="name" value="{{ old('name', $inventaris->name) }}" required>
+                        <input type="text" name="name" class="form-control" id="name" value="{{ old('name', $inventaris->name) }}">
                         @error('name')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -34,7 +30,7 @@
 
                     <div class="mb-3">
                         <label for="category" class="form-label">Kategori</label>
-                        <input type="text" name="category" class="form-control" id="category" value="{{ old('category', $inventaris->category) }}" required>
+                        <input type="text" name="category" class="form-control" id="category" value="{{ old('category', $inventaris->category) }}">
                         @error('category')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -42,7 +38,7 @@
 
                     <div class="mb-3">
                         <label for="stock" class="form-label">Stok</label>
-                        <input type="number" name="stock" class="form-control" id="stock" value="{{ old('stock', $inventaris->stock) }}" required>
+                        <input type="number" name="stock" class="form-control" id="stock" value="{{ old('stock', $inventaris->stock) }}">
                         @error('stock')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -50,7 +46,7 @@
 
                     <div class="mb-3">
                         <label for="kondisi" class="form-label">Kondisi</label>
-                        <input type="text" name="kondisi" class="form-control" id="kondisi" value="{{ old('kondisi', $inventaris->kondisi) }}" required>
+                        <input type="text" name="kondisi" class="form-control" id="kondisi" value="{{ old('kondisi', $inventaris->kondisi) }}">
                         @error('kondisi')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -59,8 +55,6 @@
                     <button type="submit" class="btn btn-primary">Update</button>
                     <a href="{{ route('dashboard.index') }}" class="btn btn-secondary">Kembali</a>
                 </form>
-            </div>
-        </div>
     </div>
 </body>
 </html>

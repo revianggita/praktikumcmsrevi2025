@@ -29,7 +29,7 @@
 
             <div class="mb-3">
                 <label for="name" class="form-label">Nama Asset</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
+                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
                 @error('name')
                     <div class="text-danger small">{{ $message }}</div>
                 @enderror
@@ -37,7 +37,7 @@
 
             <div class="mb-3">
                 <label for="category" class="form-label">Kategori</label>
-                <input type="text" class="form-control" id="category" name="category" value="{{ old('category') }}" required>
+                <input type="text" class="form-control" id="category" name="category" value="{{ old('category') }}">
                 @error('category')
                     <div class="text-danger small">{{ $message }}</div>
                 @enderror
@@ -45,7 +45,7 @@
 
             <div class="mb-3">
                 <label for="stock" class="form-label">Stok</label>
-                <input type="number" class="form-control" id="stock" name="stock" value="{{ old('stock') }}" required>
+                <input type="number" class="form-control" id="stock" name="stock" value="{{ old('stock') }}">
                 @error('stock')
                     <div class="text-danger small">{{ $message }}</div>
                 @enderror
@@ -53,7 +53,7 @@
 
             <div class="mb-3">
                 <label for="kondisi" class="form-label">Kondisi</label>
-                <input type="text" class="form-control" id="kondisi" name="kondisi" value="{{ old('kondisi') }}" required>
+                <input type="text" class="form-control" id="kondisi" name="kondisi" value="{{ old('kondisi') }}">
                 @error('kondisi')
                     <div class="text-danger small">{{ $message }}</div>
                 @enderror
