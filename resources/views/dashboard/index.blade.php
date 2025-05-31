@@ -2,7 +2,8 @@
 
 @section('content')
 <h1 class="h3 mb-4 text-gray-800">Dashboard Inventaris</h1>
-<a href="{{ route('dashboard.create') }}">Tambah Asset</a>
+<a href="{{ route('dashboard.create') }}">Tambah Asset</a> 
+
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -33,4 +34,7 @@
 </tbody>
 
 </table>
+<a href="{{ route('dashboard.export.pdf') }}">Export PDF</a><br>
+<!-- Tampilkan pagination -->
+{{ $inventaris->links() }}
 @endsection

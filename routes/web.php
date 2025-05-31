@@ -9,6 +9,7 @@ Route::resource('assets', AssetController::class);
 Route::resource('dashboard', InventarisController::class)->parameters([
     'dashboard' => 'inventaris'
 ]);
+Route::get('dashboard/export/pdf', [InventarisController::class, 'exportPdf'])->name('dashboard.export.pdf');
 
 Route::resource('transactions', TransactionController::class);
 
@@ -16,5 +17,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/dashboard', [InventarisController::class, 'index']);
-// Route::get('/dashboard/create', [InventarisController::class, 'create'])->name('dashboard.create');
+

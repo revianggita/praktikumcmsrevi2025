@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 use App\Models\Inventaris;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class InventarisController extends Controller
 {
     public function index()
     {
-    // Mengambil semua data asset
-    $inventaris = Inventaris::all();
+    // Mengambil Mengambil per 5 data
+    $inventaris = Inventaris::paginate(5);
 
     // Mengirim data ke view
     return view('dashboard.index', compact('inventaris'));
@@ -51,7 +52,7 @@ class InventarisController extends Controller
             'kondisi' => 'required',
         ]);
 
-        $inventaris->update($request->all());
+        $inventaris->update($request->only(['name', 'category', 'stock', 'kondisi']));
 
         return redirect()->route('dashboard.index')->with('success', 'Asset updated successfully.');
     }
@@ -62,6 +63,13 @@ class InventarisController extends Controller
         $inventaris->delete();
 
         return redirect()->route('dashboard.index')->with('success', 'Asset deleted successfully.');
+    }
+
+    public function exportPdf()
+    {
+        $inventaris = Inventaris::all(); // atau Asset::all(); jika kamu gunakan model Asset
+        $pdf = Pdf::loadView('dashboard.export_pdf', compact('inventaris'));
+        return $pdf->download('laporan_inventaris.pdf');
     }
 
 }
