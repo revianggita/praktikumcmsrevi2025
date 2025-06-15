@@ -11,6 +11,7 @@
             <th>Kategori</th>
             <th>Stok</th>
             <th>Kondisi</th>
+            <th>Gambar</th> <!-- Tambahan -->
             <th>Aksi</th>
         </tr>
     </thead>
@@ -22,6 +23,13 @@
             <td>{{ $item->stock }}</td>
             <td>{{ $item->kondisi }}</td>
             <td>
+                @if ($item->image)
+                    <img src="{{ asset('storage/' . $item->image) }}" width="80" class="img-thumbnail" style="max-height: 100px;">
+                @else
+                    <span class="text-muted">Tidak ada</span>
+                @endif
+            </td>
+            <td>
                 <a href="{{ route('dashboard.edit', $item->id) }}" class="btn btn-sm btn-warning">Edit</a>
                 <form action="{{ route('dashboard.destroy', $item->id) }}" method="POST" style="display:inline;">
                     @csrf
@@ -31,9 +39,9 @@
             </td>
         </tr>
     @endforeach
-</tbody>
-
+    </tbody>
 </table>
+
 <a href="{{ route('dashboard.export.pdf') }}">Export PDF</a><br>
 <!-- Tampilkan pagination -->
 {{ $inventaris->links() }}

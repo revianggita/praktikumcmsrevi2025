@@ -24,7 +24,7 @@
             </div>
         @endif
 
-        <form action="{{ route('dashboard.store') }}" method="POST">
+        <form action="{{ route('dashboard.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-3">
@@ -55,6 +55,14 @@
                 <label for="kondisi" class="form-label">Kondisi</label>
                 <input type="text" class="form-control" id="kondisi" name="kondisi" value="{{ old('kondisi') }}">
                 @error('kondisi')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">Gambar Asset</label>
+                <input type="file" class="form-control" id="image" name="image">
+                @error('image')
                     <div class="text-danger small">{{ $message }}</div>
                 @enderror
             </div>

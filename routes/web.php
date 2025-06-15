@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AssetController;
+//use App\Http\Controllers\AssetController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\InventarisController;
 
-Route::resource('assets', AssetController::class);
+//Route::resource('assets', AssetController::class);
 Route::resource('dashboard', InventarisController::class)->parameters([
     'dashboard' => 'inventaris'
 ]);

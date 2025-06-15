@@ -14,5 +14,6 @@ class Inventaris extends Model
         'category',
         'stock',
         'kondisi',
+        'image',
     ];
 }

@@ -16,7 +16,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('dashboard.update', $inventaris) }}" method="POST">
+                <form action="{{ route('dashboard.update', $inventaris) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -52,6 +52,20 @@
                         @enderror
                     </div>
 
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Upload Gambar Baru (opsional)</label>
+                        <input type="file" name="image" class="form-control" id="image">
+                        @error('image')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    @if ($inventaris->image)
+                        <div class="mb-3">
+                            <label class="form-label">Gambar Lama:</label><br>
+                            <img src="{{ asset('storage/' . $inventaris->image) }}" width="120">
+                        </div>
+                    @endif
                     <button type="submit" class="btn btn-primary">Update</button>
                     <a href="{{ route('dashboard.index') }}" class="btn btn-secondary">Kembali</a>
                 </form>
