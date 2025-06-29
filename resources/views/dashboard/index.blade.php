@@ -2,7 +2,13 @@
 
 @section('content')
 <h1 class="h3 mb-4 text-gray-800">Dashboard Inventaris</h1>
-<a href="{{ route('dashboard.create') }}">Tambah Asset</a> 
+
+<form method="POST" action="{{ route('logout') }}" style="display:inline;">
+    @csrf
+    <button type="submit" class="btn btn-danger btn-sm mb-3">Logout</button>
+</form>
+
+<a href="{{ route('dashboard.create') }}" class="btn btn-primary btn-sm mb-3">Tambah Asset</a>
 
 @if(session('error'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
