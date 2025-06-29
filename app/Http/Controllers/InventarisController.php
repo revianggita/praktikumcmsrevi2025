@@ -5,6 +5,7 @@ use App\Models\Inventaris;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class InventarisController extends Controller
 {
@@ -42,6 +43,8 @@ class InventarisController extends Controller
 
         Inventaris::create($data);
 
+        Log::info('Berhasil menyimpan data inventaris', ['data' => $data]);
+
         return redirect()->route('dashboard.index')->with('success', 'Asset created successfully.');
     }
 
@@ -74,6 +77,8 @@ class InventarisController extends Controller
 
         $inventaris->update($data);
 
+        Log::info('Berhasil update data inventaris', ['data' => $data]);
+
         return redirect()->route('dashboard.index')->with('success', 'Asset updated successfully.');
     }
 
@@ -100,10 +105,16 @@ class InventarisController extends Controller
     {
         try {
             $inventaris = Inventaris::findOrFail($id);
+
+            Log::info('Berhasil membuka data inventaris', ['id' => $id]);
+
             return view('dashboard.show', compact('inventaris'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error('Gagal menemukan data inventaris', ['id' => $id, 'error' => $e->getMessage()]);
+
             return redirect()->route('dashboard.index')->with('error', 'Data tidak ditemukan.');
         }
     }
+
 
 }
