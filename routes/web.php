@@ -21,4 +21,6 @@ Route::get('/pendaftaran-ktp', function () {
     return 'Selamat datang di halaman Pendaftaran KTP Online!';
 })->middleware('check.age');
 
+Route::get('dashboard/{id}', [InventarisController::class, 'show'])->name('dashboard.show');
+
 

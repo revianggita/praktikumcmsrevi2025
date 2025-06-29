@@ -4,6 +4,13 @@
 <h1 class="h3 mb-4 text-gray-800">Dashboard Inventaris</h1>
 <a href="{{ route('dashboard.create') }}">Tambah Asset</a> 
 
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -30,6 +37,7 @@
                 @endif
             </td>
             <td>
+                <a href="{{ route('dashboard.show', $item->id) }}" class="btn btn-sm btn-info">Lihat</a>
                 <a href="{{ route('dashboard.edit', $item->id) }}" class="btn btn-sm btn-warning">Edit</a>
                 <form action="{{ route('dashboard.destroy', $item->id) }}" method="POST" style="display:inline;">
                     @csrf

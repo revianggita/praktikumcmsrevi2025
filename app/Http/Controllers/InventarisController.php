@@ -46,8 +46,10 @@ class InventarisController extends Controller
     }
 
 
-    public function edit(Inventaris $inventaris)
+    public function edit($id)
     {
+        
+        $inventaris = Inventaris::findOrFail($id);
         return view('dashboard.edit', compact('inventaris'));
     }
 
@@ -92,6 +94,16 @@ class InventarisController extends Controller
         $inventaris = Inventaris::all(); // atau Asset::all(); jika kamu gunakan model Asset
         $pdf = Pdf::loadView('dashboard.export_pdf', compact('inventaris'));
         return $pdf->download('laporan_inventaris.pdf');
+    }
+
+    public function show($id)
+    {
+        try {
+            $inventaris = Inventaris::findOrFail($id);
+            return view('dashboard.show', compact('inventaris'));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return redirect()->route('dashboard.index')->with('error', 'Data tidak ditemukan.');
+        }
     }
 
 }
