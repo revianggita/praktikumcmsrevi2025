@@ -11,8 +11,8 @@ class InventarisController extends Controller
 {
     public function index()
     {
-    // Mengambil Mengambil per 5 data
-    $inventaris = Inventaris::paginate(4);
+    // Mengambil Mengambil per 4 data
+    $inventaris = Inventaris::orderBy('created_at', 'desc')->paginate(4);
 
     // Mengirim data ke view
     return view('dashboard.index', compact('inventaris'));
@@ -50,41 +50,48 @@ class InventarisController extends Controller
 
 
     public function edit($id)
-    {
-        
-        $inventaris = Inventaris::findOrFail($id);
-        return view('dashboard.edit', compact('inventaris'));
-    }
+{
+    $inventaris = Inventaris::findOrFail($id);
+    return view('dashboard.edit', compact('inventaris'));
+}
 
-    public function update(Request $request, Inventaris $inventaris)
-    {
-        $request->validate([
-            'name' => 'required',
-            'category' => 'required',
-            'stock' => 'required|integer',
-            'kondisi' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+public function update(Request $request, $id)
+{
+    $inventaris = Inventaris::findOrFail($id);
 
-        $data = $request->only(['name', 'category', 'stock', 'kondisi']);
+    $request->validate([
+        'name' => 'required',
+        'category' => 'required',
+        'stock' => 'required|integer',
+        'kondisi' => 'required',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
-        if ($request->hasFile('image')) {
-            if ($inventaris->image && Storage::exists('public/' . $inventaris->image)) {
-                Storage::delete('public/' . $inventaris->image);
-            }
-            $data['image'] = $request->file('image')->store('inventaris', 'public');
+    $data = $request->only(['name', 'category', 'stock', 'kondisi']);
+
+    if ($request->hasFile('image')) {
+        // Hapus gambar lama
+        if ($inventaris->image && Storage::exists('public/' . $inventaris->image)) {
+            Storage::delete('public/' . $inventaris->image);
         }
-
-        $inventaris->update($data);
-
-        Log::info('Berhasil update data inventaris', ['data' => $data]);
-
-        return redirect()->route('dashboard.index')->with('success', 'Asset updated successfully.');
+        // Simpan gambar baru
+        $data['image'] = $request->file('image')->store('inventaris', 'public');
     }
 
+    $inventaris->update($data);
 
-    public function destroy(Inventaris $inventaris)
+    Log::info('Berhasil update data inventaris', ['data' => $data]);
+
+    return redirect()->route('dashboard.index')->with('success', 'Asset updated successfully.');
+}
+
+
+
+
+    public function destroy($id)
     {
+        $inventaris = Inventaris::findOrFail($id);
+
         if ($inventaris->image && Storage::exists('public/' . $inventaris->image)) {
             Storage::delete('public/' . $inventaris->image);
         }
@@ -93,6 +100,7 @@ class InventarisController extends Controller
 
         return redirect()->route('dashboard.index')->with('success', 'Asset deleted successfully.');
     }
+
 
     public function exportPdf()
     {

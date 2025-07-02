@@ -1,13 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\InventarisController;
 use App\Http\Controllers\ProfileController;
 
 // Halaman depan (public)
 Route::get('/', function () {
-    return view('welcome');
+    if (Auth::check()) {
+        return redirect()->route('dashboard.index');
+    }
+
+    return view('auth.login');
 });
 
 // ✅ Route WAJIB ADA untuk Laravel Breeze agar login/register tidak error
@@ -22,8 +26,7 @@ Route::middleware(['auth'])->group(function () {
     // Export PDF
     Route::get('dashboard/export/pdf', [InventarisController::class, 'exportPdf'])->name('dashboard.export.pdf');
 
-    // Show detail
-    Route::get('dashboard/{id}', [InventarisController::class, 'show'])->name('dashboard.show');
+    
 
     // Profile user (Laravel Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
