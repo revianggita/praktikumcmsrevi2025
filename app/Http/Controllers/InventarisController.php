@@ -98,7 +98,7 @@ public function update(Request $request, $id)
 
         $inventaris->delete();
 
-        return redirect()->route('dashboard.index')->with('success', 'Asset deleted successfully.');
+        return redirect()->route('dashboard.index')->with('success', 'Asset deleted successfully');
     }
 
 
