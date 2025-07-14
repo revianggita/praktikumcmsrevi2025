@@ -8,7 +8,7 @@
     <button type="submit" class="btn btn-danger btn-sm mb-3">Logout</button>
 </form>
 
-<a href="{{ route('dashboard.create') }}" class="btn btn-primary btn-sm mb-3">Tambah Asset</a>
+<a href="{{ route('dashboard.create') }}" class="btn btn-primary btn-sm mb-3">Tambah Barang Baru</a>
 
 @if(session('error'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">

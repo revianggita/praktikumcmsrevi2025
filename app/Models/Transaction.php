@@ -4,30 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Inventaris;
+use App\Models\User;
 
 class Transaction extends Model
 {
     use HasFactory;
 
-    // Tentukan atribut mana saja yang bisa diisi melalui mass assignment
+    // Kolom yang dapat diisi
     protected $fillable = [
-        'asset_id', // Kolom yang bisa diisi
-        'user_id',  // Kolom yang bisa diisi
-        'type',     // Kolom yang bisa diisi
-        'quantity', // Kolom yang bisa diisi
-        'date',     // Kolom yang bisa diisi
+        'inventaris_id', // GANTI dari asset_id
+        'user_id',
+        'type',
+        'quantity',
+        'date',
     ];
+
     public $timestamps = false;
-    public function asset()
+
+    // Relasi ke tabel inventaris
+    public function inventaris()
     {
-        return $this->belongsTo(Asset::class);  // Transaction belongs to Asset
+        return $this->belongsTo(Inventaris::class); // GANTI dari Asset::class
     }
 
-    /**
-     * Relasi dengan model User
-     */
+    // Relasi ke tabel user
     public function user()
     {
-        return $this->belongsTo(User::class);  // Transaction belongs to User
+        return $this->belongsTo(User::class);
     }
 }

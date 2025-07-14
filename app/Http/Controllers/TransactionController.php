@@ -3,72 +3,75 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
-use App\Models\Asset;
-use App\Models\User;
+use App\Models\Inventaris;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
+    /**
+     * Menampilkan daftar inventaris di halaman transaksi
+     */
     public function index()
     {
-        $transactions = Transaction::with(['asset', 'user'])->get();
-        return view('transactions.index', compact('transactions'));
+        $inventarisList = Inventaris::all();
+        return view('transactions.index', compact('inventarisList'));
     }
 
-    public function create()
+    /**
+     * Menampilkan form edit transaksi (stok masuk/keluar) untuk inventaris tertentu
+     */
+    public function edit($id)
     {
-        $assets = Asset::all();
-        $users = User::all();
-        return view('transactions.create', compact('assets', 'users'));
+        $inventaris = Inventaris::findOrFail($id);
+        return view('transactions.edit', compact('inventaris'));
     }
 
-    public function store(Request $request)
+    /**
+     * Menyimpan perubahan stok dan mencatat transaksi baru
+     */
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'asset_id' => 'required|exists:assets,id',
-            'user_id' => 'required|exists:users,id',
-            'type' => 'required|in:masuk,keluar,rusak,pindah',
-            'quantity' => 'required|integer',
+            'type' => 'required|in:masuk,keluar',
+            'quantity' => 'required|integer|min:1',
             'date' => 'required|date',
         ]);
 
-        Transaction::create($request->all());
+        $inventaris = Inventaris::findOrFail($id);
 
-        return redirect()->route('transactions.index')->with('success', 'Transaction created successfully.');
-    }
+        // Update stok berdasarkan jenis transaksi
+        if ($request->type === 'masuk') {
+            $inventaris->stock += $request->quantity;
+        } elseif ($request->type === 'keluar') {
+            if ($inventaris->stock < $request->quantity) {
+                return back()->withErrors(['quantity' => 'Stok tidak mencukupi.']);
+            }
+            $inventaris->stock -= $request->quantity;
+        }
 
-    public function edit(Transaction $transaction)
-    {
-        $assets = Asset::all();
-        $users = User::all();
-        return view('transactions.edit', compact('transaction', 'assets', 'users'));
-    }
-    public function show(Transaction $transaction)
-    {
-        $assets = Asset::all();
-        $users = User::all();
-        return view('transactions.show', compact('transaction', 'assets', 'users'));
-    }
+        $inventaris->save();
 
-    public function update(Request $request, Transaction $transaction)
-    {
-        $request->validate([
-            'asset_id' => 'required|exists:assets,id',
-            'user_id' => 'required|exists:users,id',
-            'type' => 'required|in:masuk,keluar,rusak,pindah',
-            'quantity' => 'required|integer',
-            'date' => 'required|date',
+        // Simpan riwayat transaksi
+        Transaction::create([
+            'inventaris_id' => $inventaris->id,
+            'user_id' => Auth::id(),
+            'type' => $request->type,
+            'quantity' => $request->quantity,
+            'date' => $request->date,
         ]);
 
-        $transaction->update($request->all());
-
-        return redirect()->route('transactions.index')->with('success', 'Transaction updated successfully.');
+        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil dicatat dan stok diperbarui.');
     }
 
-    public function destroy(Transaction $transaction)
+    /**
+     * (Opsional) Menampilkan daftar riwayat transaksi
+     */
+    public function showRiwayat()
     {
-        $transaction->delete();
-        return redirect()->route('transactions.index')->with('success', 'Transaction deleted successfully.');
+        $transactions = Transaction::with('inventaris')->orderBy('created_at', 'asc')->get();
+        return view('transactions.riwayat', compact('transactions'));
     }
+
+    // Jika tidak digunakan, bisa hapus metode create(), store(), destroy()
 }

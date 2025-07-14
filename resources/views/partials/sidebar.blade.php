@@ -18,7 +18,7 @@
         <i class="fas fa-fw fa-tachometer-alt"></i>
         <span>Dashboard</span>
     </a>
-    <a class="nav-link" href="/dashboard">
+    <a class="nav-link" href="/transactions">
         <i class="fas fa-fw fa-tachometer-alt"></i>
         <span>Transaction</span>
     </a>

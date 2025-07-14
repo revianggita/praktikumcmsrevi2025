@@ -16,4 +16,11 @@ class Inventaris extends Model
         'kondisi',
         'image',
     ];
+
+    // Relasi: satu inventaris punya banyak transaksi
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'inventaris_id');
+    }
+    
 }
