@@ -50,40 +50,40 @@ class InventarisController extends Controller
 
 
     public function edit($id)
-{
-    $inventaris = Inventaris::findOrFail($id);
-    return view('dashboard.edit', compact('inventaris'));
-}
-
-public function update(Request $request, $id)
-{
-    $inventaris = Inventaris::findOrFail($id);
-
-    $request->validate([
-        'name' => 'required',
-        'category' => 'required',
-        'stock' => 'required|integer',
-        'kondisi' => 'required',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
-
-    $data = $request->only(['name', 'category', 'stock', 'kondisi']);
-
-    if ($request->hasFile('image')) {
-        // Hapus gambar lama
-        if ($inventaris->image && Storage::exists('public/' . $inventaris->image)) {
-            Storage::delete('public/' . $inventaris->image);
-        }
-        // Simpan gambar baru
-        $data['image'] = $request->file('image')->store('inventaris', 'public');
+    {
+        $inventaris = Inventaris::findOrFail($id);
+        return view('dashboard.edit', compact('inventaris'));
     }
 
-    $inventaris->update($data);
+    public function update(Request $request, $id)
+    {
+        $inventaris = Inventaris::findOrFail($id);
 
-    Log::info('Berhasil update data inventaris', ['data' => $data]);
+        $request->validate([
+            'name' => 'required',
+            'category' => 'required',
+            'stock' => 'required|integer',
+            'kondisi' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
 
-    return redirect()->route('dashboard.index')->with('success', 'Asset updated successfully.');
-}
+        $data = $request->only(['name', 'category', 'stock', 'kondisi']);
+
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama
+            if ($inventaris->image && Storage::exists('public/' . $inventaris->image)) {
+                Storage::delete('public/' . $inventaris->image);
+            }
+            // Simpan gambar baru
+            $data['image'] = $request->file('image')->store('inventaris', 'public');
+        }
+
+        $inventaris->update($data);
+
+        Log::info('Berhasil update data inventaris', ['data' => $data]);
+
+        return redirect()->route('dashboard.index')->with('success', 'Asset updated successfully.');
+    }
 
 
 
